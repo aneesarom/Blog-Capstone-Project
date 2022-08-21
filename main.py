@@ -49,7 +49,7 @@ def get_user(ident):
 ##CONFIGURE TABLES
 
 class BlogPost(db.Model):
-    # __bind_key__ = 'blog_key'
+    __bind_key__ = 'blog_key'
     __tablename__ = 'blog_table'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), unique=True, nullable=False)
@@ -64,7 +64,7 @@ class BlogPost(db.Model):
 
 
 class User(db.Model, UserMixin):
-    # __tablename__ = 'user_table'
+    __tablename__ = 'user_table'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
@@ -77,7 +77,7 @@ class User(db.Model, UserMixin):
 
 
 class Comment(db.Model, UserMixin):
-    # __bind_key__ = 'comment_key'
+    __bind_key__ = 'comment_key'
     __tablename__ = 'comment_table'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String(250), nullable=False)
