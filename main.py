@@ -86,7 +86,7 @@ class Comment(db.Model, UserMixin):
 
 
 # db.create_all()
-# db.session.commit()
+db.session.commit()
 
 
 def admin_only(function):
