@@ -85,8 +85,8 @@ class Comment(db.Model, UserMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("user_table.id"))
 
 
-db.create_all()
-db.session.commit()
+# db.create_all()
+# db.session.commit()
 
 
 def admin_only(function):
