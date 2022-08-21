@@ -11,9 +11,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from sqlalchemy.orm import relationship
 from flask_gravatar import Gravatar
+import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 bootstrap = Bootstrap(app)
 gravatar = Gravatar(app,
@@ -26,10 +27,10 @@ gravatar = Gravatar(app,
                     base_url=None)
 
 ##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_BINDS'] = {
-    'blog_key': 'sqlite:///blog.db',
-    'comment_key': 'sqlite:///comment.db'
+    'blog_key': os.environ.get("DATABASE_URL"),
+    'comment_key': os.environ.get("DATABASE_URL")
 
 }
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -48,7 +49,7 @@ def get_user(ident):
 ##CONFIGURE TABLES
 
 class BlogPost(db.Model):
-    __bind_key__ = 'blog_key'
+    # __bind_key__ = 'blog_key'
     __tablename__ = 'blog_table'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(250), unique=True, nullable=False)
@@ -63,7 +64,7 @@ class BlogPost(db.Model):
 
 
 class User(db.Model, UserMixin):
-    __tablename__ = 'user_table'
+    # __tablename__ = 'user_table'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), nullable=False)
@@ -76,7 +77,7 @@ class User(db.Model, UserMixin):
 
 
 class Comment(db.Model, UserMixin):
-    __bind_key__ = 'comment_key'
+    # __bind_key__ = 'comment_key'
     __tablename__ = 'comment_table'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String(250), nullable=False)
