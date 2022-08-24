@@ -85,7 +85,7 @@ class Comment(db.Model, UserMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("user_table.id"))
 
 
-# db.create_all()
+db.create_all()
 db.session.commit()
 
 
@@ -235,9 +235,10 @@ def edit_post(post_id):
 @admin_only
 def delete_post(post_id):
     post_to_delete = BlogPost.query.get(post_id)
+    comment_to_delete = Comment.query.filter_by(blog_id=post_id)
+    for comment in comment_to_delete:
+        db.session.delete(comment)
     db.session.delete(post_to_delete)
-    comment_to_delete = Comment.quert.get(post_id)
-    db.session.delete(comment_to_delete)
     db.session.commit()
     return redirect(url_for('get_all_posts'))
 
